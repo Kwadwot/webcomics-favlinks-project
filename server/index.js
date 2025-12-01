@@ -13,13 +13,13 @@ app.get('/', (req, res) => {
 
 // CRUD routes
 // --- Create a new site ---
-// app.post('/sites', dbQueries.createSite);
+app.post('/sites', dbQueries.createSite);
 // --- Read all sites ---
 app.get('/sites', dbQueries.getSites);
 // --- Update a site ---
-// app.put('/sites/:id', dbQueries.updateSite);
+app.put('/sites/:id', dbQueries.updateSite);
 // --- Delete a site ---
-// app.delete('/sites/:id', dbQueries.deleteSite);
+app.delete('/sites/:id', dbQueries.deleteSite);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
