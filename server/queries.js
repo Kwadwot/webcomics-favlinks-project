@@ -9,4 +9,29 @@ const pool = new POOL({
     port: process.env.DB_PORT,
 });
 
-console.log(pool);
+// console.log(pool);
+
+// --- Create all the functions for handling the express server
+//  requests and database queries ---
+
+// Create a new site
+
+// Read all sites
+
+// Get all sites
+const getSites = (request, response) => {
+    pool.query('SELECT * FROM sites ORDER BY id ASC', (error, results) => {
+        if (error) {
+            throw error;
+        }
+        response.status(200).json(results.rows);
+    });
+};
+
+// Update a site
+
+// Delete a site
+
+module.exports = {
+    getSites,
+};
