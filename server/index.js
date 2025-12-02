@@ -1,14 +1,19 @@
-require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const dbQueries = require('./queries');
 const app = express();
 
 const PORT = 9001;
 
+// Middleware
+
+// Host react app as static files
+app.use(express.static(path.resolve(__dirname, '../client/dist')));
+
 // Routes
 app.get('/', (req, res) => {
     // Will add some logic here later
-    res.send('Hello from the server!');
+    res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
 });
 
 // CRUD routes

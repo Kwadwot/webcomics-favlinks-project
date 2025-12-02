@@ -1,3 +1,14 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
+// Temporary debugging - remove after fixing
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_NAME:', process.env.DB_NAME);
+console.log('DB_PASSWORD type:', typeof process.env.DB_PASSWORD);
+console.log('DB_PASSWORD value:', process.env.DB_PASSWORD ? '***exists***' : 'UNDEFINED');
+console.log('DB_PORT:', process.env.DB_PORT);
+
 // Connect to the database using the node-postgres package
 const POOL = require('pg').Pool;
 
