@@ -6,6 +6,8 @@ const app = express();
 const PORT = 9001;
 
 // Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Host react app as static files
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
