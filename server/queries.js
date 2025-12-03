@@ -19,12 +19,16 @@ const pool = new POOL({
 
 // Create a new site
 const createSite = (request, response) => {
-    const { name, URL } = request.body;
-    pool.query('INSERT INTO sites (name, URL) VALUES ($1, $2)', [name, URL], (error, results) => {
+    const { site_name, site_link, comic_type, popular_comic_name, popular_comic_link } = request.body;
+
+    pool.query(`INSERT INTO sites (site_name, site_link, comic_type, popular_comic_name, popular_comic_link) 
+        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+        [site_name, site_link, comic_type, popular_comic_name, popular_comic_link], (error, results) => {
         if (error) {
-            throw error;
+            console.error('Database error:', error);
+            return response.status(500).json({ error: 'Failed to create site' });
         }
-        response.status(201).send(`Site added with ID: ${results.insertId}`);
+        response.status(201).json(results.rows[0]);  // Fixed: use results.rows[0] instead of insertId
     });
 };
 
@@ -41,8 +45,15 @@ const getSites = (request, response) => {
 // Update a site
 const updateSite = (request, response) => {
     const { id } = request.params;
-    const { name, URL } = request.body;
-    pool.query('UPDATE sites SET name = $1, URL = $2 WHERE id = $3', [name, URL, id], (error) => {
+    const { site_name, site_link, comic_type, popular_comic_name, popular_comic_link } = request.body;
+    pool.query(`UPDATE sites 
+        SET site_name = $1,
+        site_link = $2,
+        comic_type = $3,
+        popular_comic_name = $4,
+        popular_comic_link = $5
+        WHERE id = $6`,
+        [site_name, site_link, comic_type, popular_comic_name, popular_comic_link, id], (error, results) => {
         if (error) {
             throw error;
         }
