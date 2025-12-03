@@ -61,7 +61,6 @@ The `sites` table contains the following fields:
 ## API Endpoints
 
 - `GET /sites` - Retrieve all sites
-- `GET /sites/:id` - Retrieve a specific site
 - `POST /sites` - Create a new site
 - `PUT /sites/:id` - Update a site
 - `DELETE /sites/:id` - Delete a site
