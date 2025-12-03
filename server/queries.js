@@ -36,7 +36,8 @@ const createSite = (request, response) => {
 const getSites = (request, response) => {
     pool.query('SELECT * FROM sites ORDER BY id ASC', (error, results) => {
         if (error) {
-            throw error;
+            console.error('Database error:', error);
+            return response.status(500).json({ error: 'Failed to fetch sites' });
         }
         response.status(200).json(results.rows);
     });
@@ -48,16 +49,22 @@ const updateSite = (request, response) => {
     const { site_name, site_link, comic_type, popular_comic_name, popular_comic_link } = request.body;
     pool.query(`UPDATE sites 
         SET site_name = $1,
-        site_link = $2,
-        comic_type = $3,
-        popular_comic_name = $4,
-        popular_comic_link = $5
-        WHERE id = $6`,
-        [site_name, site_link, comic_type, popular_comic_name, popular_comic_link, id], (error, results) => {
+            site_link = $2,
+            comic_type = $3,
+            popular_comic_name = $4,
+            popular_comic_link = $5
+        WHERE id = $6
+        RETURNING *`,
+        [site_name, site_link, comic_type, popular_comic_name, popular_comic_link, id],
+        (error, results) => {
         if (error) {
-            throw error;
+            console.error('Database error:', error);
+            return response.status(500).json({ error: 'Failed to update site' });
         }
-        response.status(200).send(`Site updated with ID: ${id}`);
+        if (results.rows.length === 0) {
+            return response.status(404).json({ error: 'Site not found' });
+        }
+        response.status(200).send(results.rows[0]);
     });
 };
 
@@ -65,11 +72,15 @@ const updateSite = (request, response) => {
 // Delete a site
 const deleteSite = (request, response) => {
     const { id } = request.params;
-    pool.query('DELETE FROM sites WHERE id = $1', [id], (error) => {
+    pool.query('DELETE FROM sites WHERE id = $1 RETURNING *', [id], (error) => {
         if (error) {
-            throw error;
+            console.error('Database error:', error);
+            return response.status(500).json({ error: 'Failed to delete site' });
         }
-        response.status(200).send(`Site deleted with ID: ${id}`);
+        if (results.rows.length === 0) {
+            return response.status(404).json({ error: 'Site not found' });
+        }
+        response.status(200).send({ message: 'Site deleted', id: results.rows[0].id });
     });
 };
 
