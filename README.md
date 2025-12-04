@@ -27,6 +27,7 @@ A full-stack web application for managing and organizing your favorite webcomic 
 
 ## Project Structure
 
+```
 webcomics-favlinks-project/
 ├── client/ # React frontend
 │ ├── src/
