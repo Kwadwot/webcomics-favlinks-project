@@ -47,6 +47,7 @@ webcomics-favlinks-project/
 ├── schema.sql # Database schema
 ├── seed.sql # Sample data (optional)
 └── README.md
+```
 
 ## Database Schema
 
