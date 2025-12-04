@@ -72,7 +72,7 @@ const updateSite = (request, response) => {
 // Delete a site
 const deleteSite = (request, response) => {
     const { id } = request.params;
-    pool.query('DELETE FROM sites WHERE id = $1 RETURNING *', [id], (error) => {
+    pool.query('DELETE FROM sites WHERE id = $1 RETURNING *', [id], (error, results) => {
         if (error) {
             console.error('Database error:', error);
             return response.status(500).json({ error: 'Failed to delete site' });
